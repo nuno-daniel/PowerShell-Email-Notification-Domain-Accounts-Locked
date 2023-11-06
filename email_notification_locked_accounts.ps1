@@ -28,7 +28,7 @@ try {
     $CcRecipient = $HelpdeskEmail
 
     # Read HTML content from file
-	  $EmailBodyFilePath = "C:\scripts\locked_accounts\email_template.html"
+		$EmailBodyFilePath = "C:\scripts\locked_accounts\email_template.html"
 	  $EmailBodyTemplate = Get-Content -Path $EmailBodyFilePath -Raw
 	  # Replace variables in the HTML template
 	  $EmailBody = $ExecutionContext.InvokeCommand.ExpandString($EmailBodyTemplate)
