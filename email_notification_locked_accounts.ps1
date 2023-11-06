@@ -4,8 +4,8 @@ Name: Lockout Email
 Trigger: On event - Log: Security, Source: Microsoft-Windows-Security-Auditing, Event ID: 4740
 #>
 
-	# Set script encoding to UTF-8
-	[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+# Set script encoding to UTF-8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 try {
     # Get information about the locked account and other information like the desktop name, events, and so on
@@ -27,7 +27,7 @@ try {
     # Define CcRecipient
     $CcRecipient = $HelpdeskEmail
 
-	  # Read HTML content from file
+    # Read HTML content from file
 	  $EmailBodyFilePath = "C:\scripts\locked_accounts\email_template.html"
 	  $EmailBodyTemplate = Get-Content -Path $EmailBodyFilePath -Raw
 	  # Replace variables in the HTML template
@@ -60,11 +60,11 @@ try {
 	# Create the PSCredential object
 	$Credential = New-Object System.Management.Automation.PSCredential($Username, $EncryptedPassword)
 
-    # Create an SMTP client and send the email
-    $SMTPClient = New-Object Net.Mail.SmtpClient("domain.com")
-    $SMTPClient.Port = 587
-    $SMTPClient.EnableSsl = $true
-    $SMTPClient.Credentials = $Credential
+  # Create an SMTP client and send the email
+  $SMTPClient = New-Object Net.Mail.SmtpClient("domain.com")
+  $SMTPClient.Port = 587
+  $SMTPClient.EnableSsl = $true
+  $SMTPClient.Credentials = $Credential
     
 	# Explicitly set the content type to UTF-8
 	$ContentType = New-Object System.Net.Mime.ContentType
@@ -75,8 +75,8 @@ try {
 	$SMTPClient.Send($MailMessage)
    
 	# Log successful email delivery
-    $SuccessLogEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Email sent successfully to $($To)"
-    Add-Content -Path "C:\scripts\locked_accounts\log\email_success_log.txt" -Value $SuccessLogEntry
+  $SuccessLogEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Email sent successfully to $($To)"
+  Add-Content -Path "C:\scripts\locked_accounts\log\email_success_log.txt" -Value $SuccessLogEntry
 
 } catch {
     $ErrorMessage = $_.Exception.Message
