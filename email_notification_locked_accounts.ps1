@@ -28,10 +28,10 @@ try {
     $CcRecipient = $HelpdeskEmail
 
     # Read HTML content from file
-		$EmailBodyFilePath = "C:\scripts\locked_accounts\email_template.html"
-	  $EmailBodyTemplate = Get-Content -Path $EmailBodyFilePath -Raw
-	  # Replace variables in the HTML template
-	  $EmailBody = $ExecutionContext.InvokeCommand.ExpandString($EmailBodyTemplate)
+    $EmailBodyFilePath = "C:\scripts\locked_accounts\email_template.html"
+    $EmailBodyTemplate = Get-Content -Path $EmailBodyFilePath -Raw
+    # Replace variables in the HTML template
+    $EmailBody = $ExecutionContext.InvokeCommand.ExpandString($EmailBodyTemplate)
 	
     # Check if the email address is available
     if ($UserEmail -ne $null -and $UserEmail -ne "") {
@@ -43,7 +43,7 @@ try {
         $To = $HelpdeskEmail
     }
 
-	  # Create a MailMessage object
+    # Create a MailMessage object
     $MailMessage = New-Object System.Net.Mail.MailMessage
     $MailMessage.From = "Access Control System <noreply@domain.com>"
     $MailMessage.To.Add($To)
@@ -52,13 +52,13 @@ try {
     $MailMessage.Body = $EmailBody
     $MailMessage.IsBodyHtml = $true
 
-	  # Retrieve the password securely
-	  $Username = "noreply@domain.com"
-	  $PasswordFile = "C:\scripts\locked_accounts\pwd.txt"
-	  $EncryptedPassword = Get-Content -Path $PasswordFile | ConvertTo-SecureString
+    # Retrieve the password securely
+    $Username = "noreply@domain.com"
+    $PasswordFile = "C:\scripts\locked_accounts\pwd.txt"
+    $EncryptedPassword = Get-Content -Path $PasswordFile | ConvertTo-SecureString
     
-	  # Create the PSCredential object
-	  $Credential = New-Object System.Management.Automation.PSCredential($Username, $EncryptedPassword)
+    # Create the PSCredential object
+    $Credential = New-Object System.Management.Automation.PSCredential($Username, $EncryptedPassword)
 
     # Create an SMTP client and send the email
     $SMTPClient = New-Object Net.Mail.SmtpClient("domain.com")
@@ -66,15 +66,15 @@ try {
     $SMTPClient.EnableSsl = $true
     $SMTPClient.Credentials = $Credential
 
-	  # Explicitly set the content type to UTF-8
-	  $ContentType = New-Object System.Net.Mime.ContentType
-	  $ContentType.CharSet = "UTF-8"
-	  $MailMessage.BodyEncoding = [System.Text.Encoding]::GetEncoding($ContentType.CharSet)
+    # Explicitly set the content type to UTF-8
+    $ContentType = New-Object System.Net.Mime.ContentType
+    $ContentType.CharSet = "UTF-8"
+    $MailMessage.BodyEncoding = [System.Text.Encoding]::GetEncoding($ContentType.CharSet)
     
-	  # Send email
-	  $SMTPClient.Send($MailMessage)
+    # Send email
+    $SMTPClient.Send($MailMessage)
     
-	  # Log successful email delivery
+    # Log successful email delivery
     $SuccessLogEntry = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Email sent successfully to $($To)"
     Add-Content -Path "C:\scripts\locked_accounts\log\email_success_log.txt" -Value $SuccessLogEntry
 
